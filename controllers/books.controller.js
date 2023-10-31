@@ -15,14 +15,10 @@ module.exports = class BooksController {
       req.body["createdBy"] = req.user.id;
       const newBook = new Books(req.body);
       try {
-        if (req.user.isAdmin === true) {
-          const bookObject = await newBook.save();
-          res
-            .status(200)
-            .json({ message: "Book Added Successfully", data: bookObject });
-        } else {
-          res.status(400).json({ message: "Not Authorized To Add A Book!" });
-        }
+        const bookObject = await newBook.save();
+        res
+          .status(200)
+          .json({ message: "Book Added Successfully", data: bookObject });
       } catch (error) {
         res.status(500).json(error);
       }
@@ -88,7 +84,7 @@ module.exports = class BooksController {
         res.status(500).json(error);
       }
     } else {
-      res.status(403).json("You are not allowed to add List!");
+      res.status(403).json("You are not allowed to delete book!");
     }
   }
   /**
