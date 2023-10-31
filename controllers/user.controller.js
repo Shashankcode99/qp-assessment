@@ -20,7 +20,7 @@ module.exports = class UserController {
         const newUser = new Users({
           userName: req.body.userName,
           email: req.body.email,
-          password: (ciphertext = CryptoJS.AES.encrypt(
+          password: (CryptoJS.AES.encrypt(
             req.body.password,
             process.env.SECRET_KEY
           ).toString()),
