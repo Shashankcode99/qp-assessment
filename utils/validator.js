@@ -1,11 +1,11 @@
 const validator = require("validator");
 module.exports = async function payloadValidator(payload, check) {
-  const { userName, email, password, isAdmin, title, author, summary, publishedYear, price } = payload;
+  const { userName, email, password, isAdmin, itemName, publishedYear, price, expiryDate } = payload;
   const errorMessage = {
     errors: [],
   };
 
-  //Name Validator
+  //Username Validator
   if (check?.register && !userName ) {
     errorMessage.errors.push({
       field: "userName",
@@ -65,44 +65,19 @@ module.exports = async function payloadValidator(payload, check) {
     });
   }
 
-  //Title Validator
-  if (check?.books && !title) {
+  //Item Validator
+  if (check?.item && !itemName) {
     errorMessage.errors.push({
-      field: "title",
-      error: "Title Missing",
+      field: "itemName",
+      error: "Item Name Missing",
     });
-  } else if (check?.books && typeof title !== "string") {
+  } else if (check?.item && typeof itemName !== "string") {
     errorMessage.errors.push({
-      field: "title",
-      error: "Title name should be a valid string",
-    });
-  }
-
-  // Author Validator
-  if (check?.books && !author) {
-    errorMessage.errors.push({
-      field: "author",
-      error: "Author is missing!",
-    });
-  } else if (check?.books && typeof author !== "string") {
-    errorMessage.errors.push({
-      field: "author",
-      error: "Author name should be a valid string",
+      field: "itemName",
+      error: "Item name should be a valid string",
     });
   }
 
-  //Summary Validator
-  if (check?.books && !summary) {
-    errorMessage.errors.push({
-      field: "summary",
-      error: "Summary is missing!",
-    });
-  } else if (check?.books && typeof summary !== "string") {
-    errorMessage.errors.push({
-      field: "summary",
-      error: "Summary should be a valid string",
-    });
-  }
 
   //Publisher Validator
   if (check?.books && !publishedYear) {
@@ -118,15 +93,24 @@ module.exports = async function payloadValidator(payload, check) {
   }
 
   //Price Validator
-  if (check?.books && !price) {
+  if (check?.item && !price) {
     errorMessage.errors.push({
       field: "price",
       error: "Price is missing!",
     });
-  } else if (check?.books && typeof price !== "string") {
+  } else if (check?.item && typeof price !== "string") {
     errorMessage.errors.push({
       field: "price",
       error: "Price should be a valid string",
+    });
+  }
+
+
+  //Date Validator
+  if (check?.item && expiryDate && !validator.isDate(expiryDate)) {
+    errorMessage.errors.push({
+      field: "expiryDate",
+      error: "Invalid expiry date",
     });
   }
 
